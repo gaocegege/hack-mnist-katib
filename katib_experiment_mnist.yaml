@@ -1,0 +1,53 @@
+apiVersion: "kubeflow.org/v1alpha2"
+kind: Experiment
+metadata:
+  namespace: kubeflow
+  name: tfjob-example
+spec:
+  parallelTrialCount: 1
+  maxTrialCount: 12
+  maxFailedTrialCount: 3
+  objective:
+    type: minimize
+    goal: 1000
+    objectiveMetricName: entropy
+  algorithm:
+    algorithmName: random
+  parameters:
+    - name: --learning_rate
+      parameterType: double
+      feasibleSpace:
+        min: "0.01"
+        max: "0.05"
+    - name: --batch_size
+      parameterType: int
+      feasibleSpace:
+        min: "100"
+        max: "200"
+  trialTemplate:
+    retain: true
+    goTemplate:
+        rawTemplate: |-
+          apiVersion: "kubeflow.org/v1"
+          kind: TFJob
+          metadata:
+            name: {{.Trial}}
+            namespace: {{.NameSpace}}
+          spec:
+           tfReplicaSpecs:
+            PS:
+              replicas: 1
+              restartPolicy: Never
+              template:
+                spec:
+                  containers:
+                    - name: tensorflow
+                      image: gaocegege/tf-dist-mnist-test:1.2
+            Worker:
+              replicas: 2
+              restartPolicy: Never
+              template:
+                spec:
+                  containers:
+                    - name: tensorflow
+                      image: gaocegege/tf-dist-mnist-test:1.2
