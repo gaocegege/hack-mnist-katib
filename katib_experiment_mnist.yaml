@@ -1,4 +1,4 @@
-apiVersion: "kubeflow.org/v1alpha2"
+apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
   namespace: kubeflow
@@ -9,7 +9,7 @@ spec:
   maxFailedTrialCount: 3
   objective:
     type: minimize
-    goal: 1000
+    goal: 10
     objectiveMetricName: entropy
   algorithm:
     algorithmName: random
@@ -25,7 +25,6 @@ spec:
         min: "100"
         max: "200"
   trialTemplate:
-    retain: true
     goTemplate:
         rawTemplate: |-
           apiVersion: "kubeflow.org/v1"
@@ -43,6 +42,18 @@ spec:
                   containers:
                     - name: tensorflow
                       image: gaocegege/tf-dist-mnist-test:1.2
+                      command:
+                        - "python"
+                        - "/var/tf_dist_mnist/dist_mnist.py"
+                        - "--data_dir"
+                        - "/var/tf_dist_mnist/mnist-data"
+                        - "--train_steps"
+                        - "500"
+                        {{- with .HyperParameters}}
+                        {{- range .}}
+                        - "{{.Name}}={{.Value}}"
+                        {{- end}}
+                        {{- end}}
             Worker:
               replicas: 2
               restartPolicy: Never
@@ -51,3 +62,15 @@ spec:
                   containers:
                     - name: tensorflow
                       image: gaocegege/tf-dist-mnist-test:1.2
+                      command:
+                        - "python"
+                        - "/var/tf_dist_mnist/dist_mnist.py"
+                        - "--data_dir"
+                        - "/var/tf_dist_mnist/mnist-data"
+                        - "--train_steps"
+                        - "500"
+                        {{- with .HyperParameters}}
+                        {{- range .}}
+                        - "{{.Name}}={{.Value}}"
+                        {{- end}}
+                        {{- end}}
