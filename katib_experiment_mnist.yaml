@@ -1,10 +1,10 @@
 apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
-  namespace: kubeflow
+  namespace: kubeflow-user
   name: tfjob-example
 spec:
-  parallelTrialCount: 1
+  parallelTrialCount: 3
   maxTrialCount: 12
   maxFailedTrialCount: 3
   objective:
@@ -23,7 +23,7 @@ spec:
       parameterType: int
       feasibleSpace:
         min: "100"
-        max: "200"
+        max: "110"
   trialTemplate:
     goTemplate:
         rawTemplate: |-

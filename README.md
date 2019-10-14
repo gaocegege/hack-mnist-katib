@@ -1,8 +1,16 @@
-# 分布式 MNIST
+## 单机 MNIST
 
 仅供 [kubeflow/katib](https://github.com/kubeflow/katib) 进行测试用。
 
-## 镜像
+### 镜像
+
+gaocegege/tensorflow-mnist-example:1.14.0-with-summaries
+
+## 分布式 MNIST
+
+仅供 [kubeflow/katib](https://github.com/kubeflow/katib) 进行测试用。
+
+### 镜像
 
 gaocegege/tf-dist-mnist-test:1.2
 
