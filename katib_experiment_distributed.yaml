@@ -1,11 +1,11 @@
 apiVersion: "kubeflow.org/v1alpha3"
 kind: Experiment
 metadata:
-  namespace: kubeflow-user
-  name: tfjob-example
+  namespace: kubeflow
+  name: distributed-example
 spec:
-  parallelTrialCount: 3
-  maxTrialCount: 12
+  parallelTrialCount: 1
+  maxTrialCount: 3
   maxFailedTrialCount: 3
   objective:
     type: minimize
