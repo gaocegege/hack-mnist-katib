@@ -1,1 +1,1 @@
-print('val_acc:', '1')
+print('val_acc=', '1')
